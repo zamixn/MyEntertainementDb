@@ -1,9 +1,9 @@
 Project for university where you have to create a backend API server and a frontend client.
 
-Tools used:
+**Tools used:**
 
-Backend: .netcore 3.1
-Frontend: React Js
+  * Backend: .netcore 3.1
+  * Frontend: React Js
 
-Deployment tool: Docker
-Cloud hosting: Heroku
+  * Deployment tool: Docker
+  * Cloud hosting: Heroku
