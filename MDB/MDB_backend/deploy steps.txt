@@ -1,0 +1,35 @@
+﻿//---------------------------------------
+// ------------------ SHELL SCRIPT DEPLEYOMENT
+//---------------------------------------
+// this shell script runs the manual deploement steps
+// * has to be run in bash environment
+// * has to be placed in .csproj dir
+
+./deploy.sh <heroku username>
+
+//---------------------------------------
+// ------------------ MANUAL DEPLOYMENT
+//---------------------------------------
+
+// from the solution dir
+dotnet publish -c Release
+
+copy docker file to publish folder of project
+
+heroku login
+
+heroku container:login
+
+// from the publish dir of the project
+docker build -t mbd-backend "C:\\Stuff\\_UNI_\\4 Kursas\\1 Semestras\\T120B165 Saityno taikomųjų programų projektavimas\\MDB\\MDB\\MDB_backend\\bin\\Release\\netcoreapp3.1\\publish"
+
+docker tag mbd-backend registry.heroku.com/mbd-backend/web
+
+docker push registry.heroku.com/mbd-backend/web
+
+heroku container:release web --app mbd-backend
+
+
+
+// to see the logs:
+heroku logs --tail --app mbd-backend
