@@ -25,6 +25,13 @@ namespace MDB_backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
             services.AddControllers().AddNewtonsoftJson();
         }
 
@@ -38,7 +45,12 @@ namespace MDB_backend
 
             app.UseHttpsRedirection();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
@@ -46,9 +58,6 @@ namespace MDB_backend
             {
                 endpoints.MapControllers();
             });
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
         }
     }
 }
