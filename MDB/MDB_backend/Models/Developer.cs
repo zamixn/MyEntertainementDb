@@ -8,5 +8,10 @@ namespace MDB_backend.Models
     public class Developer
     {
         public string Name { get; private set; }
+
+        public Developer(string name)
+        {
+            Name = name;
+        }
     }
 }

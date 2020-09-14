@@ -10,15 +10,15 @@ namespace MDB_backend.Models
         public int Id { get; private set; }
         public string Title { get; private set; }
         public float MyRating { get; private set; }
-        public DateTime ReleaseData { get; private set; }
+        public DateTime ReleaseDate { get; private set; }
         public string Description { get; private set; }
 
-        protected Entry(int id, string title, float myRating, DateTime releaseData, string description)
+        protected Entry(int id, string title, float myRating, DateTime releaseDate, string description)
         {
             Id = id;
             Title = title;
             MyRating = myRating;
-            ReleaseData = releaseData;
+            ReleaseDate = releaseDate;
             Description = description;
         }
     }
