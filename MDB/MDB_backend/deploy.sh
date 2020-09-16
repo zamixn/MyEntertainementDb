@@ -23,6 +23,7 @@ echo
 echo
 echo "---------------------------- Building with app docker"
 echo
+cp "C:\\Stuff\\_UNI_\\4 Kursas\\1 Semestras\\T120B165 Saityno taikomųjų programų projektavimas\\MDB\\MDB\\MDB_backend\\Dockerfile" "C:\\Stuff\\_UNI_\\4 Kursas\\1 Semestras\\T120B165 Saityno taikomųjų programų projektavimas\\MDB\\MDB\\MDB_backend\\bin\\Release\\netcoreapp3.1\\publish\\Dockerfile"
 docker build -t mbd-backend "C:\\Stuff\\_UNI_\\4 Kursas\\1 Semestras\\T120B165 Saityno taikomųjų programų projektavimas\\MDB\\MDB\\MDB_backend\\bin\\Release\\netcoreapp3.1\\publish"
 
 echo

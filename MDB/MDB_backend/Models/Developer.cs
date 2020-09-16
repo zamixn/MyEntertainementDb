@@ -7,10 +7,12 @@ namespace MDB_backend.Models
 {
     public class Developer
     {
+        public int Id { get; private set; }
         public string Name { get; private set; }
 
-        public Developer(string name)
+        public Developer(int id, string name)
         {
+            Id = id;
             Name = name;
         }
     }

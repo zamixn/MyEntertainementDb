@@ -10,7 +10,7 @@ namespace MDB_backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GameController : ControllerBase
+    public class GamesController : ControllerBase
     {
         [HttpGet]
         public IEnumerable<Game> Get()

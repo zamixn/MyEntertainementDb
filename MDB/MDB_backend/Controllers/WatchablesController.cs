@@ -10,7 +10,7 @@ namespace MDB_backend.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class WatchableController : ControllerBase
+    public class WatchablesController : ControllerBase
     {
         [HttpGet]
         public IEnumerable<WatchableEntry> Get()

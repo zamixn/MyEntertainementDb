@@ -10,21 +10,21 @@ namespace MDB_backend.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class DeveloperController : ControllerBase
+    public class DevelopersController : ControllerBase
     {
         // GET: Developer
         [HttpGet]
         public IEnumerable<Developer> Get()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 10).Select(index => new Developer($"Dev {index}")).ToArray();
+            return Enumerable.Range(1, 10).Select(index => new Developer(index, $"Dev {index}")).ToArray();
         }
 
         // GET: Developer/5
         [HttpGet("{id}", Name = "Get")]
         public Developer Get(int id)
         {
-            return new Developer($"Dev {id}");
+            return new Developer(id, $"Dev {id}");
         }
 
         // POST: Developer
