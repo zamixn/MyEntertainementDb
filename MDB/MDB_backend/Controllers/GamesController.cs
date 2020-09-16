@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MDB_backend.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -15,8 +17,36 @@ namespace MDB_backend.Controllers
         [HttpGet]
         public IEnumerable<Game> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 10).Select(index => new Game(index, $"Cool game {index}", (float)rng.NextDouble(), DateTime.Now, $"Cool description {index}", rng.Next(0, 10), DateTime.Now)).ToArray();
+            return Game.GetGames();
+        }
+
+        // GET: games/5
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            Game g = Game.GetGame(id);
+            return Ok(g);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] Game g)
+        {
+            string uri = "uri?";
+            return Created(uri, g);
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult Patch(int id, [FromBody] Game g)
+        {
+            Game.Update(id, g);
+            return StatusCode(StatusCodes.Status202Accepted, $"\"Response\":\"updated {id}\"");
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            Game.Delete(id);
+            return StatusCode(StatusCodes.Status204NoContent, $"\"Response\":\"deleted {id}\"");
         }
     }
 }
