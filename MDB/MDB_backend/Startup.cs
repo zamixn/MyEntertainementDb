@@ -20,7 +20,23 @@ namespace MDB_backend
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             config.ConnectionStrings.ConnectionStrings.Remove("MysqlConnection");
-            config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("MysqlConnection", "Data Source=localhost;port=3306;Initial Catalog=mdb; User Id=root;password=;SslMode=none;convert zero datetime=True"));
+
+            string host = "localhost";
+            string port = "3306";
+            string db_name = "mdb";
+            string user_id = "root";
+            string pw = "";
+
+            string cleardb_url = Environment.GetEnvironmentVariable("CLEARDB_DATABASE_URL");
+            if (!string.IsNullOrEmpty(cleardb_url))
+            {
+                user_id = cleardb_url.Substring(8, 14);
+                pw = cleardb_url.Substring(23, 8);
+                host = cleardb_url.Substring(cleardb_url.IndexOf('@') + 1, cleardb_url.LastIndexOf('/') - cleardb_url.IndexOf('@') - 1);
+                db_name = cleardb_url.Substring(cleardb_url.LastIndexOf('/') + 1, cleardb_url.LastIndexOf('?') - cleardb_url.LastIndexOf('/') - 1);
+            }
+
+            config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("MysqlConnection", $"Data Source={host};port={port};Initial Catalog={db_name}; User Id={user_id};password={pw};SslMode=none;convert zero datetime=True"));
 
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
