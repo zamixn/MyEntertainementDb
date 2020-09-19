@@ -50,7 +50,6 @@ namespace MDB_backend.Models
             string sql = $"SELECT * FROM `movie` LEFT JOIN `watchableentry` ON `movie`.`id`= `watchableentry`.`id` LEFT JOIN `entry` ON `movie`.`id`=`entry`.`id` WHERE `movie`.`id`='{id}'";
             DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
 
-            List<Movie> list = new List<Movie>();
             var row = dt.Rows[0];
             return new Movie(
                     id: Convert.ToInt32(row["id"]),
