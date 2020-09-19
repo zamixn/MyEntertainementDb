@@ -1,52 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MDB_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace MDB_backend.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
-    public class GamesController : ControllerBase
+    [ApiController]
+    public class MoviesController : ControllerBase
     {
+        // GET: Movies
         [HttpGet]
-        public IEnumerable<Game> Get()
+        public IEnumerable<Movie> Get()
         {
-            return Game.GetGames();
+            return Movie.GetMovies();
         }
 
-        // GET: games/5
+        // GET: Movies/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public Movie Get(int id)
         {
-            Game g = Game.GetGame(id);
-            return Ok(g);
+            return Movie.GetMovie(id);
         }
+
 
         [HttpPost]
-        public IActionResult Post([FromBody] Game g)
+        public IActionResult Post([FromBody] Movie m)
         {
             string uri = "uri?";
-            Game.CreateGame(g);
-            return Created(uri, g);
+            m = Movie.Create(m);
+            return Created(uri, m);
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Patch(int id, [FromBody] Game g)
+        public IActionResult Patch(int id, [FromBody] Movie m)
         {
-            Game.Update(id, g);
+            Movie.Update(id, m);
             return StatusCode(StatusCodes.Status202Accepted, $"\"Response\":\"updated {id}\"");
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Game.Delete(id);
+            Movie.Delete(id);
             return StatusCode(StatusCodes.Status204NoContent, $"\"Response\":\"deleted {id}\"");
         }
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MDB_backend.Tools;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,25 +9,49 @@ namespace MDB_backend.Models
 {
     public class WatchableEntry : Entry
     {
-        public enum WatchableType
-        {
-            Movie = 1,
-            TvMiniSeries = 2,
-            TvMovie = 3,
-            TvSeries = 4,
-            Video = 5
-        }
-
         public int TimesSeen { get; private set; }
         public DateTime LastSeen { get; private set; }
-        public WatchableType Type { get; private set; }
 
-        public WatchableEntry(int id, string title, float myRating, DateTime releaseData, string description, int timesSeen, DateTime lastSeen, WatchableType type)
-            : base(id, title, myRating, releaseData, description)
+        public WatchableEntry() : base()
+        {
+        }
+
+        [JsonConstructor]
+        public WatchableEntry(int id, string title, double myRating, string description, int timesSeen, DateTime lastSeen)
+            : base(id, title, myRating, description)
         {
             TimesSeen = timesSeen;
             LastSeen = lastSeen;
-            Type = type;
+        }
+
+        protected bool CreateWatchableEntry(int id)
+        {
+            CreateEntry(id);
+
+            string sql = $"INSERT INTO `watchableentry`(`TimesSeen`, `LastSeen`, `id`) VALUES ('{TimesSeen}','{LastSeen}','{id}')";
+            DatabaseHelper.ExecuteNonQuery(sql);
+
+            return true;
+        }
+
+        protected bool UpdateWatchableEntry(int id)
+        {
+            UpdateEntry(id);
+
+            string sql = $"UPDATE `watchableentry` SET `TimesSeen`='{TimesSeen}',`LastSeen`='{LastSeen}' WHERE `watchableentry`.`id`='{id}'";
+            DatabaseHelper.ExecuteNonQuery(sql);
+
+            return true;
+        }
+
+        protected static bool DeleteWatchableEntry(int id)
+        {
+            string sql = $"DELETE FROM `watchableentry` WHERE `watchableentry`.`id`='{id}'";
+            DatabaseHelper.ExecuteNonQuery(sql);
+
+            Entry.DeleteEntry(id);
+
+            return true;
         }
     }
 }

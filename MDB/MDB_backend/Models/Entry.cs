@@ -10,7 +10,6 @@ namespace MDB_backend.Models
         public int Id { get; private set; }
         public string Title { get; private set; }
         public double Rating { get; private set; }
-        public DateTime ReleaseDate { get; private set; }
         public string Description { get; private set; }
 
         protected Entry()
@@ -18,13 +17,17 @@ namespace MDB_backend.Models
         }
 
         [JsonConstructor]
-        protected Entry(int id, string title, double rating, DateTime releaseDate, string description)
+        protected Entry(int id, string title, double rating, string description)
         {
             Id = id;
             Title = title;
             Rating = rating;
-            ReleaseDate = releaseDate;
             Description = description;
+        }
+
+        public void ChangeId(int newId)
+        {
+            Id = newId;
         }
 
         public static int GetAutoIncrament()

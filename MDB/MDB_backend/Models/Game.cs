@@ -15,17 +15,19 @@ namespace MDB_backend.Models
     {
         public int TimesPlayed { get; private set; }
         public DateTime LastPlayed { get; private set; }
+        public DateTime ReleaseDate { get; private set; }
 
         public Game() : base()
         {
         }
 
         [JsonConstructor]
-        public Game(int id, string title, double myRating, DateTime releaseDate, string description, int timesPlayed, DateTime lastPlayed)
-            : base(id, title, myRating, releaseDate, description)
+        public Game(int id, string title, double myRating, string description, int timesPlayed, DateTime lastPlayed, DateTime releaseDate)
+            : base(id, title, myRating, description)
         {
             TimesPlayed = timesPlayed;
             LastPlayed = lastPlayed;
+            ReleaseDate = releaseDate;
         }
 
 
@@ -37,7 +39,7 @@ namespace MDB_backend.Models
             List<Game> list = new List<Game>();
             foreach (DataRow row in dt.Rows)
             {
-                Game drone = new Game(
+                Game game = new Game(
                     id: Convert.ToInt32(row["id"]),
                     title: Convert.ToString(row["Title"]),
                     myRating: Convert.ToDouble(row["Rating"]),
@@ -46,7 +48,7 @@ namespace MDB_backend.Models
                     timesPlayed: Convert.ToInt32(row["TimesPlayed"]),
                     lastPlayed: Convert.ToDateTime(row["LastPlayed"])
                     );
-                list.Add(drone);
+                list.Add(game);
             }
             return list;
         }
