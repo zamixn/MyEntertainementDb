@@ -10,42 +10,42 @@ namespace MDB_backend.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class MoviesController : ControllerBase
+    public class WatchablesController : ControllerBase
     {
         // GET: Movies
         [HttpGet]
-        public IEnumerable<Movie> Get()
+        public IEnumerable<Watchable> Get()
         {
-            return Movie.GetMovies();
+            return Watchable.GetList();
         }
 
         // GET: Movies/5
         [HttpGet("{id}")]
-        public Movie Get(int id)
+        public Watchable Get(int id)
         {
-            return Movie.GetMovie(id);
+            return Watchable.Get(id);
         }
 
 
         [HttpPost]
-        public IActionResult Post([FromBody] Movie m)
+        public IActionResult Post([FromBody] Watchable m)
         {
             string uri = "uri?";
-            m = Movie.Create(m);
+            m = Watchable.Create(m);
             return Created(uri, m);
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Patch(int id, [FromBody] Movie m)
+        public IActionResult Patch(int id, [FromBody] Watchable m)
         {
-            Movie.Update(id, m);
+            Watchable.Update(id, m);
             return StatusCode(StatusCodes.Status202Accepted, $"\"Response\":\"updated {id}\"");
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Movie.Delete(id);
+            Watchable.Delete(id);
             return StatusCode(StatusCodes.Status204NoContent, $"\"Response\":\"deleted {id}\"");
         }
     }

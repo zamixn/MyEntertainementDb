@@ -17,14 +17,14 @@ namespace MDB_backend.Controllers
         [HttpGet]
         public IEnumerable<Game> Get()
         {
-            return Game.GetGames();
+            return Game.GetList();
         }
 
         // GET: games/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Game g = Game.GetGame(id);
+            Game g = Game.Get(id);
             return Ok(g);
         }
 
@@ -32,7 +32,7 @@ namespace MDB_backend.Controllers
         public IActionResult Post([FromBody] Game g)
         {
             string uri = "uri?";
-            Game.CreateGame(g);
+            Game.Create(g);
             return Created(uri, g);
         }
 

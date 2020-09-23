@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,6 +27,14 @@ namespace MDB_backend.Models
             War = 15
         }
 
-        public GameGenreType Genre { get; private set; }
+        public int id { get; private set; }
+        public GameGenreType Type { get; private set; }
+
+        [JsonConstructor]
+        public GameGenre(int id, GameGenreType type)
+        {
+            this.id = id;
+            Type = type;
+        }
     }
 }

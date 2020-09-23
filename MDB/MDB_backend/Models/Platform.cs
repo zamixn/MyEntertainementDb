@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace MDB_backend.Models
 {
     public class Platform
     {
-        public enum Type 
+        public enum PlatformType 
         { 
             ThreeDS = 1,
             DC = 2,
@@ -29,6 +30,14 @@ namespace MDB_backend.Models
             Xone = 18
         }
 
-        public Type PlatformType { get; private set; }
+        public int id { get; private set; }
+        public PlatformType Type { get; private set; }
+
+        [JsonConstructor]
+        public Platform(int id, PlatformType type)
+        {
+            this.id = id;
+            this.Type = type;
+        }
     }
 }

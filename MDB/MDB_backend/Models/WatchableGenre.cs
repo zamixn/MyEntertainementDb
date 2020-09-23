@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,6 +39,14 @@ namespace MDB_backend.Models
             Adult = 27
         }
 
-        public WatchableGenreType Genre { get; private set; }
+        public int id { get; private set; }
+        public WatchableGenreType Type { get; private set; }
+
+        [JsonConstructor]
+        public WatchableGenre(int id, WatchableGenreType type)
+        {
+            this.id = id;
+            Type = type;
+        }
     }
 }

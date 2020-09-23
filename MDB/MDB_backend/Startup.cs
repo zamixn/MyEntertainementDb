@@ -16,6 +16,8 @@ namespace MDB_backend
 {
     public class Startup
     {
+        public static string dbName;
+
         public Startup(IConfiguration configuration)
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -23,7 +25,7 @@ namespace MDB_backend
 
             string host = "localhost";
             string port = "3306";
-            string db_name = "mdb";
+            string db_name = "edb";
             string user_id = "root";
             string pw = "";
 
@@ -35,6 +37,7 @@ namespace MDB_backend
                 host = cleardb_url.Substring(cleardb_url.IndexOf('@') + 1, cleardb_url.LastIndexOf('/') - cleardb_url.IndexOf('@') - 1);
                 db_name = cleardb_url.Substring(cleardb_url.LastIndexOf('/') + 1, cleardb_url.LastIndexOf('?') - cleardb_url.LastIndexOf('/') - 1);
             }
+            dbName = db_name;
 
             config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("MysqlConnection", $"Data Source={host};port={port};Initial Catalog={db_name}; User Id={user_id};password={pw};SslMode=none;convert zero datetime=True"));
 

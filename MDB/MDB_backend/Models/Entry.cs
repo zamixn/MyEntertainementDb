@@ -9,20 +9,20 @@ namespace MDB_backend.Models
     {
         public int Id { get; private set; }
         public string Title { get; private set; }
-        public double Rating { get; private set; }
         public string Description { get; private set; }
+        public int Creator { get; private set; }
 
         protected Entry()
         {
         }
 
         [JsonConstructor]
-        protected Entry(int id, string title, double rating, string description)
+        protected Entry(int id, string title, string description, int creator)
         {
             Id = id;
             Title = title;
-            Rating = rating;
             Description = description;
+            Creator = creator;
         }
 
         public void ChangeId(int newId)
@@ -32,7 +32,7 @@ namespace MDB_backend.Models
 
         public static int GetAutoIncrament()
         {
-            string sql = $"SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'mdb' AND TABLE_NAME = 'entry'; ";
+            string sql = $"SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{Startup.dbName}' AND TABLE_NAME = 'entry'; ";
             DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
 
             var row = dt.Rows[0];
@@ -42,7 +42,7 @@ namespace MDB_backend.Models
 
         protected bool CreateEntry(int id)
         {
-            string sql = $"INSERT INTO `entry`(`Title`, `Rating`, `Description`, `id`) VALUES ('{Title}','{Rating}','{Description}','{id}')";
+            string sql = $"INSERT INTO `entry`(`Title`, `Description`, `fk_Userid`, `id`) VALUES ('{Title}','{Description}', '{Creator}','{id}')";
             DatabaseHelper.ExecuteNonQuery(sql);
 
             return true;
@@ -50,7 +50,7 @@ namespace MDB_backend.Models
 
         protected bool UpdateEntry(int id)
         {
-            string sql = $"UPDATE `entry` SET `Title`='{Title}',`Rating`='{Rating}',`Description`='{Description}' WHERE `entry`.`id`='{id}'";
+            string sql = $"UPDATE `entry` SET `Title`='{Title}',`Description`='{Description}',`fk_Userid`='{Creator}' WHERE `entry`.`id`='{id}'";
             DatabaseHelper.ExecuteNonQuery(sql);
 
             return true;

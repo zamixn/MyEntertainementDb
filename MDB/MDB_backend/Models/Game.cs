@@ -22,8 +22,8 @@ namespace MDB_backend.Models
         }
 
         [JsonConstructor]
-        public Game(int id, string title, double myRating, string description, int timesPlayed, DateTime lastPlayed, DateTime releaseDate)
-            : base(id, title, myRating, description)
+        public Game(int id, string title, string description, int creator, int timesPlayed, DateTime lastPlayed, DateTime releaseDate)
+            : base(id, title, description, creator)
         {
             TimesPlayed = timesPlayed;
             LastPlayed = lastPlayed;
@@ -31,7 +31,7 @@ namespace MDB_backend.Models
         }
 
 
-        public static List<Game> GetGames()
+        public static List<Game> GetList()
         {
             string sql = $"SELECT * FROM `game` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id`";
             DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
@@ -42,18 +42,18 @@ namespace MDB_backend.Models
                 Game game = new Game(
                     id: Convert.ToInt32(row["id"]),
                     title: Convert.ToString(row["Title"]),
-                    myRating: Convert.ToDouble(row["Rating"]),
                     releaseDate: Convert.ToDateTime(row["ReleaseDate"]),
                     description: Convert.ToString(row["Description"]),
                     timesPlayed: Convert.ToInt32(row["TimesPlayed"]),
-                    lastPlayed: Convert.ToDateTime(row["LastPlayed"])
+                    lastPlayed: Convert.ToDateTime(row["LastPlayed"]),
+                    creator: Convert.ToInt32(row["fk_Userid"])
                     );
                 list.Add(game);
             }
             return list;
         }
 
-        public static Game GetGame(int id)
+        public static Game Get(int id)
         {
             string sql = $"SELECT * FROM `game` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` WHERE `game`.`id`='{id}'";
             DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
@@ -64,16 +64,16 @@ namespace MDB_backend.Models
             return new Game(
                    id: Convert.ToInt32(row["id"]),
                    title: Convert.ToString(row["Title"]),
-                   myRating: Convert.ToDouble(row["Rating"]),
                    releaseDate: Convert.ToDateTime(row["ReleaseDate"]),
                    description: Convert.ToString(row["Description"]),
                    timesPlayed: Convert.ToInt32(row["TimesPlayed"]),
-                   lastPlayed: Convert.ToDateTime(row["LastPlayed"])
+                   lastPlayed: Convert.ToDateTime(row["LastPlayed"]),
+                   creator: Convert.ToInt32(row["fk_Userid"])
                    );
 
         }
 
-        public static bool CreateGame(Game g)
+        public static bool Create(Game g)
         {
             int id = Entry.GetAutoIncrament(); 
             g.CreateEntry(id);
