@@ -2,3 +2,4 @@ MDB_backend/bin/
 MDB_backend/obj/
 **/.vs/
 **/heroku_db_login_info.txt
+**/tmp_db_export.sql
