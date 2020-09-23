@@ -94,6 +94,9 @@ namespace MDB_backend.Models
 
         public static bool Update(int id, Watchable w)
         {
+            if (!DatabaseHelper.CheckIfRowExists("watchable", id))
+                return false;
+
             w.UpdateEntry(id);
 
             string sql = $"UPDATE `watchable` SET `TimesSeen`='{w.TimesSeen}',`LastSeen`='{w.LastSeen}',`Type`='{(int)w.Type}',`ReleaseDate`='{w.ReleaseDate}' WHERE `watchable`.`id`='{id}'";
@@ -104,6 +107,9 @@ namespace MDB_backend.Models
 
         public static bool Delete(int id)
         {
+            if (!DatabaseHelper.CheckIfRowExists("watchable", id))
+                return false;
+
             string sql = $"DELETE FROM `watchable` WHERE `watchable`.`id`='{id}'";
             DatabaseHelper.ExecuteNonQuery(sql);
 

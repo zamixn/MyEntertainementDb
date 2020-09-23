@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MDB_backend.Models;
+using MDB_backend.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,6 +26,9 @@ namespace MDB_backend.Controllers
         public IActionResult Get(int id)
         {
             Game g = Game.Get(id);
+            if (g == null)
+                return NotFound(new ResponseMessage("id not found"));
+
             return Ok(g);
         }
 
@@ -39,15 +43,17 @@ namespace MDB_backend.Controllers
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, [FromBody] Game g)
         {
-            Game.Update(id, g);
-            return StatusCode(StatusCodes.Status202Accepted, $"\"Response\":\"updated {id}\"");
+            if(Game.Update(id, g))
+                return StatusCode(StatusCodes.Status202Accepted, new ResponseMessage($"sucess. updated {id}"));
+            return NotFound(new ResponseMessage($"id: '{id}' not found"));
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Game.Delete(id);
-            return StatusCode(StatusCodes.Status204NoContent, $"\"Response\":\"deleted {id}\"");
+            if(Game.Delete(id))
+                return StatusCode(StatusCodes.Status204NoContent, new ResponseMessage($"sucess. deleted {id}"));
+            return NotFound(new ResponseMessage($"id: '{id}' not found"));
         }
     }
 }

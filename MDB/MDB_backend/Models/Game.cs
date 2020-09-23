@@ -86,6 +86,9 @@ namespace MDB_backend.Models
 
         public static bool Update(int id, Game g)
         {
+            if (!DatabaseHelper.CheckIfRowExists("game", id))
+                return false;
+
             g.UpdateEntry(id);
 
             string sql = $"UPDATE `game` SET `TimesPlayed`='{g.TimesPlayed}',`LastPlayed`='{g.LastPlayed}',`ReleaseDate`='{g.ReleaseDate}' WHERE `game`.`id`='{id}'";
@@ -96,6 +99,9 @@ namespace MDB_backend.Models
 
         public static bool Delete(int id)
         {
+            if (!DatabaseHelper.CheckIfRowExists("game", id))
+                return false;
+
             string sql = $"DELETE FROM `game` WHERE `game`.`id`='{id}'";
             DatabaseHelper.ExecuteNonQuery(sql);
 

@@ -35,5 +35,13 @@ namespace MDB_backend.Tools
 
             return dt;
         }
+
+        public static bool CheckIfRowExists(string tableName, int id, string columnName = "id")
+        {
+            string sql = $"SELECT COUNT(1) as 'found' FROM `{tableName}` WHERE `{columnName}` = '{id}'";
+            DataTable dt = FillDataTableWithQueryResults(sql);
+            var row = dt.Rows[0];
+            return Convert.ToInt32(row["found"]) > 0;
+        }
     }
 }

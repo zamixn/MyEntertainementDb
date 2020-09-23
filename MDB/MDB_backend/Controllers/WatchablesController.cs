@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MDB_backend.Models;
+using MDB_backend.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,9 +22,12 @@ namespace MDB_backend.Controllers
 
         // GET: Movies/5
         [HttpGet("{id}")]
-        public Watchable Get(int id)
+        public IActionResult Get(int id)
         {
-            return Watchable.Get(id);
+            Watchable g = Watchable.Get(id);
+            if (g == null)
+                return NotFound(new ResponseMessage($"id: '{id}' not found"));
+            return Ok(g);
         }
 
 
@@ -38,15 +42,17 @@ namespace MDB_backend.Controllers
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, [FromBody] Watchable m)
         {
-            Watchable.Update(id, m);
-            return StatusCode(StatusCodes.Status202Accepted, $"\"Response\":\"updated {id}\"");
+            if(Watchable.Update(id, m))
+                return StatusCode(StatusCodes.Status202Accepted, new ResponseMessage($"sucess. updated {id}"));
+            return NotFound(new ResponseMessage($"id: '{id}' not found"));
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Watchable.Delete(id);
-            return StatusCode(StatusCodes.Status204NoContent, $"\"Response\":\"deleted {id}\"");
+            if(Watchable.Delete(id))
+                return StatusCode(StatusCodes.Status204NoContent, new ResponseMessage($"sucess. deleted {id}"));
+            return NotFound(new ResponseMessage($"id: '{id}' not found"));
         }
     }
 }

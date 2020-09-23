@@ -75,6 +75,9 @@ namespace MDB_backend.Models.ExternalSources
 
         public static bool Update(int id, Creator c)
         {
+            if (!DatabaseHelper.CheckIfRowExists("creator", id))
+                return false;
+
             string sql = $"UPDATE `creator` SET `Name`='{c.Name}',`Info`='{c.Info}',`CreatorType`='{(int)c.Type}' WHERE `creator`.`id`='{id}'";
             DatabaseHelper.ExecuteNonQuery(sql);
 
@@ -83,6 +86,9 @@ namespace MDB_backend.Models.ExternalSources
 
         public static bool Delete(int id)
         {
+            if (!DatabaseHelper.CheckIfRowExists("creator", id))
+                return false;
+
             string sql = $"DELETE FROM `creator` WHERE `creator`.`id`='{id}'";
             DatabaseHelper.ExecuteNonQuery(sql);
 
