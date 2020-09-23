@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MDB_backend.Models;
+using MDB_backend.Models.ExternalSources;
 using MDB_backend.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,16 @@ namespace MDB_backend.Controllers
             if(Game.Delete(id))
                 return StatusCode(StatusCodes.Status204NoContent, new ResponseMessage($"sucess. deleted {id}"));
             return NotFound(new ResponseMessage($"id: '{id}' not found"));
+        }
+
+        [HttpGet("{id}/creators")]
+        public IActionResult GetCreators(int id)
+        {
+            List<Creator> creators = Creator.GetEntryCreators(id);
+            if(creators == null)
+                return NotFound(new ResponseMessage("id not found"));
+
+            return Ok(creators);
         }
     }
 }

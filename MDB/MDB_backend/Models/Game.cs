@@ -1,4 +1,5 @@
-﻿using MDB_backend.Tools;
+﻿using MDB_backend.Models.ExternalSources;
+using MDB_backend.Tools;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
@@ -109,6 +110,5 @@ namespace MDB_backend.Models
 
             return true;
         }
-
     }
 }

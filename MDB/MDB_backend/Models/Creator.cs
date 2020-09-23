@@ -29,6 +29,16 @@ namespace MDB_backend.Models.ExternalSources
             this.id = id;
         }
 
+        public static Creator Parse(DataRow row)
+        { 
+            return new Creator(
+                    id: Convert.ToInt32(row["id"]),
+                    info: Convert.ToString(row["Info"]),
+                    type: (CreatorType)Convert.ToInt32(row["CreatorType"]),
+                    name: Convert.ToString(row["Name"])
+                    );
+        }
+
         public static List<Creator> GetList()
         {
             string sql = $"SELECT * FROM `creator`";
@@ -36,15 +46,7 @@ namespace MDB_backend.Models.ExternalSources
 
             List<Creator> list = new List<Creator>();
             foreach (DataRow row in dt.Rows)
-            {
-                Creator game = new Creator(
-                    id: Convert.ToInt32(row["id"]),
-                    info: Convert.ToString(row["Info"]),
-                    type: (CreatorType)Convert.ToInt32(row["CreatorType"]),
-                    name: Convert.ToString(row["Name"])
-                    );
-                list.Add(game);
-            }
+                list.Add(Parse(row));
             return list;
         }
 
@@ -56,12 +58,7 @@ namespace MDB_backend.Models.ExternalSources
             if (dt.Rows.Count <= 0)
                 return null;
             var row = dt.Rows[0];
-            return new Creator(
-                    id: Convert.ToInt32(row["id"]),
-                    info: Convert.ToString(row["Info"]),
-                    type: (CreatorType)Convert.ToInt32(row["CreatorType"]),
-                    name: Convert.ToString(row["Name"])
-                    );
+            return Parse(row);
 
         }
 
@@ -93,6 +90,23 @@ namespace MDB_backend.Models.ExternalSources
             DatabaseHelper.ExecuteNonQuery(sql);
 
             return true;
+        }
+
+
+
+        public static List<Creator> GetEntryCreators(int entryId)
+        {
+            if (!DatabaseHelper.CheckIfRowExists("entry_creator", entryId, columnName: "fk_Entryid"))
+                return null;
+
+
+            string sql = $"SELECT * FROM `entry_creator` LEFT JOIN `creator` ON `creator`.`id`=`entry_creator`.`fk_Creatorid` WHERE `fk_Entryid`='{entryId}'";
+            DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
+            List<Creator> creators = new List<Creator>();
+            foreach (DataRow row in dt.Rows)
+                creators.Add(Parse(row));
+
+            return creators;
         }
     }
 }
