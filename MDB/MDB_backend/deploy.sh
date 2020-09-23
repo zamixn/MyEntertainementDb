@@ -44,6 +44,7 @@ echo "---------------------------- Launching on heroku"
 echo
 heroku container:release web --app mbd-backend
 
+
 while true; do
     read -p "Do you wish to see the app logs from heroku? [y/n] " yn
     case $yn in

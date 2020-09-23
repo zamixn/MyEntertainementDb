@@ -7,6 +7,8 @@
 
 ./deploy.sh <heroku username>
 
+// to export local db to cleardb run upload_db.bat
+
 //---------------------------------------
 // ------------------ MANUAL DEPLOYMENT
 //---------------------------------------
