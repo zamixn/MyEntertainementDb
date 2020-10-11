@@ -40,16 +40,7 @@ namespace MDB_backend.Models
             List<Game> list = new List<Game>();
             foreach (DataRow row in dt.Rows)
             {
-                Game game = new Game(
-                    id: Convert.ToInt32(row["id"]),
-                    title: Convert.ToString(row["Title"]),
-                    releaseDate: Convert.ToDateTime(row["ReleaseDate"]),
-                    description: Convert.ToString(row["Description"]),
-                    timesPlayed: Convert.ToInt32(row["TimesPlayed"]),
-                    lastPlayed: Convert.ToDateTime(row["LastPlayed"]),
-                    creator: Convert.ToInt32(row["fk_Userid"])
-                    );
-                list.Add(game);
+                list.Add(Parse(row));
             }
             return list;
         }
@@ -62,6 +53,12 @@ namespace MDB_backend.Models
             if (dt.Rows.Count <= 0)
                 return null;
             var row = dt.Rows[0];
+            return Parse(row);
+
+        }
+
+        public static Game Parse(DataRow row)
+        { 
             return new Game(
                    id: Convert.ToInt32(row["id"]),
                    title: Convert.ToString(row["Title"]),
@@ -69,9 +66,8 @@ namespace MDB_backend.Models
                    description: Convert.ToString(row["Description"]),
                    timesPlayed: Convert.ToInt32(row["TimesPlayed"]),
                    lastPlayed: Convert.ToDateTime(row["LastPlayed"]),
-                   creator: Convert.ToInt32(row["fk_Userid"])
+                   creator: Convert.ToInt32(row["fk_user_creator"])
                    );
-
         }
 
         public static bool Create(Game g)

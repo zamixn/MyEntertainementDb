@@ -55,7 +55,6 @@ namespace MDB_backend.Controllers
             return Ok(response);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult PostLogin([FromBody] SystemUser user)
         {
@@ -65,6 +64,26 @@ namespace MDB_backend.Controllers
                 return BadRequest(ResponseMessage.InvalidUserData);
 
             return Ok(response);
+        }
+
+
+        [HttpGet("{id}/games")]
+        public IActionResult GetGames(int id)
+        {
+            if (SystemUser.GetAuthenticated(HttpContext, UserRole.Any, out SystemUser usr) && usr.id == id)
+            {
+                return Ok(usr.GetRatedGames());
+            }
+            return Unauthorized(ResponseMessage.Unautharized);
+        }
+        [HttpGet("{id}/watchables")]
+        public IActionResult GetWatchables(int id)
+        {
+            if (SystemUser.GetAuthenticated(HttpContext, UserRole.Any, out SystemUser usr) && usr.id == id)
+            {
+                return Ok(usr.GetRatedWatchables());
+            }
+            return Unauthorized(ResponseMessage.Unautharized);
         }
     }
 }

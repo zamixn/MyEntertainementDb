@@ -44,17 +44,7 @@ namespace MDB_backend.Models
             List<Watchable> list = new List<Watchable>();
             foreach (DataRow row in dt.Rows)
             {
-                Watchable game = new Watchable(
-                   id: Convert.ToInt32(row["id"]),
-                   title: Convert.ToString(row["Title"]),
-                   description: Convert.ToString(row["Description"]),
-                   timesSeen: Convert.ToInt32(row["TimesSeen"]),
-                   lastSeen: Convert.ToDateTime(row["LastSeen"]),
-                   type: (WatchableType)Convert.ToInt32(row["Type"]),
-                   releaseDate: Convert.ToDateTime(row["ReleaseDate"]),
-                   creator: Convert.ToInt32(row["fk_Userid"])
-                   );
-                list.Add(game);
+                list.Add(Parse(row));
             }
             return list;
         }
@@ -67,6 +57,11 @@ namespace MDB_backend.Models
             if (dt.Rows.Count <= 0)
                 return null;
             var row = dt.Rows[0];
+            return Parse(row);
+        }
+
+        public static Watchable Parse(DataRow row)
+        { 
             return new Watchable(
                    id: Convert.ToInt32(row["id"]),
                    title: Convert.ToString(row["Title"]),

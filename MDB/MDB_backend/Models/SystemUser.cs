@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using MDB_backend.Models.CodeOnly;
 
 namespace MDB_backend.Models
 {
@@ -61,6 +62,34 @@ namespace MDB_backend.Models
             if (dt.Rows.Count > 0)
                 return ParseUser(dt.Rows[0]);
             return null;
+        }
+
+        public List<RatedGame> GetRatedGames()
+        {
+            string sql = $"SELECT * FROM `game` LEFT JOIN `entryrating` ON `game`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` WHERE `fk_Userid`='{id}'";
+
+            DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
+
+            List<RatedGame> list = new List<RatedGame>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(RatedGame.Parse(row));
+            }
+            return list;
+        }
+
+        public List<RatedWatchable> GetRatedWatchables()
+        {
+            string sql = $"SELECT * FROM `watchable` LEFT JOIN `entryrating` ON `watchable`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `entry`.`id`=`watchable`.`id` WHERE `entryrating`.`fk_Userid`='{id}'";
+
+            DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
+
+            List<RatedWatchable> list = new List<RatedWatchable>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(RatedWatchable.Parse(row));
+            }
+            return list;
         }
 
 
