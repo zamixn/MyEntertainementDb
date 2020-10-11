@@ -13,4 +13,4 @@ Project for university where you have to create a backend API server and a front
 https://mbd-backend.herokuapp.com/
 
 **Frontend**
-To be created
+https://github.com/zamixn/MyEntertainmentDb-frontend
