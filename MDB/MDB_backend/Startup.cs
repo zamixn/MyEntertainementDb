@@ -12,6 +12,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Configuration;
 using Microsoft.Extensions.Options;
+using MDB_backend.Tools;
+using Microsoft.AspNetCore.Authentication;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MDB_backend
 {
@@ -62,6 +67,26 @@ namespace MDB_backend
                 });
             });
             services.AddControllers().AddNewtonsoftJson();
+
+            var key = Encoding.ASCII.GetBytes(AppSettings.AppSecret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = true;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,15 +98,18 @@ namespace MDB_backend
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthorization();
+
             app.UseCors();
 
-            app.UseAuthorization();
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

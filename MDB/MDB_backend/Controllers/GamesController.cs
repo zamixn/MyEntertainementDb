@@ -41,7 +41,7 @@ namespace MDB_backend.Controllers
             return Created(uri, g);
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public IActionResult Patch(int id, [FromBody] Game g)
         {
             if(Game.Update(id, g))
@@ -60,9 +60,12 @@ namespace MDB_backend.Controllers
         [HttpGet("{id}/creators")]
         public IActionResult GetCreators(int id)
         {
+            if(!Game.IdExists(id))
+                return NotFound(new ResponseMessage($"id: {id} not found"));
+
             List<Creator> creators = Creator.GetEntryCreators(id);
-            if(creators == null)
-                return NotFound(new ResponseMessage("id not found"));
+            if (creators == null)
+                return Ok(new List<Creator>());
 
             return Ok(creators);
         }

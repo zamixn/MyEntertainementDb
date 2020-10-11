@@ -82,6 +82,8 @@ namespace MDB_backend.Models
             string sql = $"INSERT INTO `game`(`id`, `TimesPlayed`, `LastPlayed`, `ReleaseDate`) VALUES ('{id}','{g.TimesPlayed}','{g.LastPlayed}','{g.ReleaseDate}')";
             DatabaseHelper.ExecuteNonQuery(sql);
 
+            g.ChangeId(id);
+
             return true;
         }
 
@@ -109,6 +111,11 @@ namespace MDB_backend.Models
             Entry.DeleteEntry(id);
 
             return true;
+        }
+
+        public static bool IdExists(int id)
+        {
+            return DatabaseHelper.CheckIfRowExists("game", id);
         }
     }
 }

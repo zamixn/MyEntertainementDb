@@ -15,5 +15,8 @@ namespace MDB_backend.Tools
         {
             Message = message;
         }
+
+        public static readonly ResponseMessage Unautharized = new ResponseMessage("Unautherized");
+        public static readonly ResponseMessage InvalidUserData = new ResponseMessage("Username or password is invalid");
     }
 }
