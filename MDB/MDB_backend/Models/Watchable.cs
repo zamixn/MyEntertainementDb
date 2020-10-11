@@ -70,7 +70,7 @@ namespace MDB_backend.Models
                    lastSeen: Convert.ToDateTime(row["LastSeen"]),
                    type: (WatchableType)Convert.ToInt32(row["Type"]),
                    releaseDate: Convert.ToDateTime(row["ReleaseDate"]),
-                   creator: Convert.ToInt32(row["fk_Userid"])
+                   creator: Convert.ToInt32(row["fk_user_creator"])
                    );
         }
 
