@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using MDB_backend.Models.CodeOnly;
+using System.Diagnostics;
 
 namespace MDB_backend.Models
 {
@@ -104,15 +105,20 @@ namespace MDB_backend.Models
             return true;
         }
 
-
-        public static AuthenticateResponse Authenticate(SystemUser systemUser)
+        public AuthenticateResponse Login()
         {
-            SystemUser user = GetUserByRequest(systemUser.Username, systemUser.PasswordHash);
+            SystemUser user = GetUserByRequest(Username, PasswordHash);
             if (user == null)
                 return null;
 
-            var token = generateJwtToken(user);
-            return new AuthenticateResponse(user, token);
+            var response = Authenticate(user);
+            if(response != null)
+                user.ChangeLogInState(true);
+            return response;
+        }
+        public void Logout()
+        {
+            ChangeLogInState(false);
         }
 
 
@@ -124,6 +130,14 @@ namespace MDB_backend.Models
                     passwordHash: Convert.ToString(row["PasswordHash"]),
                     role: (UserRole)Convert.ToInt32(row["Role"])
                     );
+        }
+
+
+
+        private static AuthenticateResponse Authenticate(SystemUser user)
+        {
+            var token = generateJwtToken(user);
+            return new AuthenticateResponse(user, token);
         }
 
         /// <summary>
@@ -168,6 +182,22 @@ namespace MDB_backend.Models
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public void ChangeLogInState(bool loggedIn)
+        {
+            int val = loggedIn ? 1 : 0;
+            string sql = $"UPDATE `systemuser` SET `IsLoggedIn`='{val}' WHERE `systemuser`.`id`='{id}'";
+            DatabaseHelper.ExecuteNonQuery(sql);
+        }
+        public bool IsLoggedIn()
+        {
+            string sql = $"SELECT `IsLoggedIn` FROM `systemuser` WHERE `systemuser`.`id`='{id}'";
+
+            DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
+            var row = dt.Rows[0];
+            int val = Convert.ToInt32(row["IsLoggedIn"]);
+            return 1 == val;
         }
 
         public bool ValidateUsernameAndPassword()

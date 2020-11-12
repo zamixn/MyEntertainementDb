@@ -1,4 +1,5 @@
 ﻿using MDB_backend.Tools;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -42,6 +43,16 @@ namespace MDB_backend.Models
                                    id: Convert.ToInt32(row["id_EntryRating"]),
                                    entry_id: Convert.ToInt32(row["fk_Entryid"]),
                                    user_id: Convert.ToInt32(row["fk_Userid"]));
+        }
+
+
+        public static bool Create(EntryRating entryRating)
+        {
+            int id = DatabaseHelper.GetTableAutoIncrament("entryrating");
+            entryRating.id = id;
+            string sql = $"INSERT INTO `entryrating`(`Rating`, `fk_Entryid`, `fk_Userid`) VALUES ('{entryRating.Rating}','{entryRating.entry_id}','{entryRating.user_id}')";
+            DatabaseHelper.ExecuteNonQuery(sql);
+            return true;
         }
     }
 }

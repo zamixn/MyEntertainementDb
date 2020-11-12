@@ -52,8 +52,13 @@ namespace MDB_backend.Tools
                 var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
                 Debug.WriteLine("Attaching user: " + userId);
 
-                // attach user to context on successful jwt validation
-                context.Items[AppSettings.UserInContext] = SystemUser.Get(userId);
+                // attachUserToContext only if user is logged in
+                SystemUser usr = SystemUser.Get(userId);
+                if (usr.IsLoggedIn())
+                {
+                    // attach user to context on successful jwt validation
+                    context.Items[AppSettings.UserInContext] = usr;
+                }
             }
             catch
             {

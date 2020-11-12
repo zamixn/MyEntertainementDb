@@ -7,8 +7,8 @@ namespace MDB_backend.Tools
 {
     public class AppSettings
     {
-        // 10 minutes
-        public const int TokenDurationSeconds = 60 * 10;
+        // 24 hours minutes
+        public const int TokenDurationSeconds = 24 * 60 * 60;
 
         public const string AppSecret = "q6b7q*n-0266;165bs23v*12h91-n5a";
 

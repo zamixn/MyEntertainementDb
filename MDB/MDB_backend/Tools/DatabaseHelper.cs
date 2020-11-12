@@ -43,5 +43,17 @@ namespace MDB_backend.Tools
             var row = dt.Rows[0];
             return Convert.ToInt32(row["found"]) > 0;
         }
+
+
+
+        public static int GetTableAutoIncrament(string tableName)
+        {
+            string sql = $"SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{Startup.dbName}' AND TABLE_NAME = '{tableName}'; ";
+            DataTable dt = FillDataTableWithQueryResults(sql);
+
+            var row = dt.Rows[0];
+            int ai = Convert.ToInt32(row["AUTO_INCREMENT"]);
+            return ai;
+        }
     }
 }
