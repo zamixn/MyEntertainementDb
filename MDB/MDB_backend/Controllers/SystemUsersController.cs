@@ -83,10 +83,17 @@ namespace MDB_backend.Controllers
         {
             if (SystemUser.GetAuthenticated(HttpContext, UserRole.Any, out SystemUser usr) && usr.id == id && rating.user_id == id)
             {
-                if (EntryRating.Create(rating))
+                if (!EntryRating.Exists(rating))
                 {
-                    return Ok(rating);
+                    if (EntryRating.Create(rating))
+                        return Ok(rating);
                 }
+                else
+                {
+                    if (EntryRating.Update(rating))
+                        return Ok(rating);
+                }
+
                 return BadRequest(new ResponseMessage("Failed to rate entry"));
             }
             return Unauthorized(ResponseMessage.Unautharized);

@@ -54,5 +54,29 @@ namespace MDB_backend.Models
             DatabaseHelper.ExecuteNonQuery(sql);
             return true;
         }
+
+        public static bool Exists(EntryRating entryRating)
+        {
+            return DatabaseHelper.CheckIfRowExistsAND("entryrating", 
+                new KeyValuePair<string, string>[] { 
+                    new KeyValuePair<string, string>("fk_Entryid", entryRating.entry_id.ToString()),
+                    new KeyValuePair<string, string>("fk_Userid", entryRating.user_id.ToString())
+                });
+        }
+
+        public static bool Update(EntryRating entryRating)
+        {
+            DataRow row = DatabaseHelper.GetRowByColumns("entryrating",
+                new KeyValuePair<string, string>[] {
+                    new KeyValuePair<string, string>("fk_Entryid", entryRating.entry_id.ToString()),
+                    new KeyValuePair<string, string>("fk_Userid", entryRating.user_id.ToString())
+                });
+            EntryRating r = ParseEntryRating(row);
+
+            string sql = $"UPDATE `entryrating` SET `Rating`='{entryRating.Rating}' WHERE `entryrating`.`id_EntryRating`='{r.id}'";
+            DatabaseHelper.ExecuteNonQuery(sql);
+            entryRating.id = r.id;
+            return true;
+        }
     }
 }

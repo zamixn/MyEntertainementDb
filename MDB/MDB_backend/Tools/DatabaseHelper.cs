@@ -44,6 +44,34 @@ namespace MDB_backend.Tools
             return Convert.ToInt32(row["found"]) > 0;
         }
 
+        public static bool CheckIfRowExistsAND(string tableName, params KeyValuePair<string, string>[] pairs)
+        {
+            string condition_string = pairs.Select(kvp => $"`{kvp.Key}`='{kvp.Value}'").Aggregate((a, b) => $"{a} AND {b}");
+
+            string sql = $"SELECT COUNT(1) as 'found' FROM `{tableName}` WHERE {condition_string}";
+            DataTable dt = FillDataTableWithQueryResults(sql);
+            var row = dt.Rows[0];
+            return Convert.ToInt32(row["found"]) > 0;
+        }
+
+        public static bool CheckIfRowExistsOR(string tableName, params KeyValuePair<string, string>[] pairs)
+        {
+            string condition_string = pairs.Select(kvp => $"`{kvp.Key}`='{kvp.Value}'").Aggregate((a, b) => $"{a} OR {b}");
+
+            string sql = $"SELECT COUNT(1) as 'found' FROM `{tableName}` WHERE {condition_string}";
+            DataTable dt = FillDataTableWithQueryResults(sql);
+            var row = dt.Rows[0];
+            return Convert.ToInt32(row["found"]) > 0;
+        }
+
+        public static DataRow GetRowByColumns(string tableName, params KeyValuePair<string, string>[] pairs)
+        {
+            string condition_string = pairs.Select(kvp => $"`{kvp.Key}`='{kvp.Value}'").Aggregate((a, b) => $"{a} AND {b}");
+
+            string sql = $"SELECT * FROM `{tableName}` WHERE {condition_string}";
+            DataTable dt = FillDataTableWithQueryResults(sql);
+            return dt.Rows[0] ?? null;
+        }
 
 
         public static int GetTableAutoIncrament(string tableName)

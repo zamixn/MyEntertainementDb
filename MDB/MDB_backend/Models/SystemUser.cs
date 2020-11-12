@@ -99,6 +99,12 @@ namespace MDB_backend.Models
             if (!user.ValidateUsernameAndPassword())
                 return false;
 
+            if (DatabaseHelper.CheckIfRowExistsAND("systemuser",
+                new KeyValuePair<string, string>[] {
+                    new KeyValuePair<string, string>("Username", user.Username)
+                }))
+                return false;
+
             string sql = $"INSERT INTO `systemuser`(`Username`, `PasswordHash`, `Role`) VALUES ('{user.Username}','{user.PasswordHash}','{(int)UserRole.LoggedInUser}')";
 
             DatabaseHelper.ExecuteNonQuery(sql);
