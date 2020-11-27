@@ -78,6 +78,16 @@ namespace MDB_backend.Controllers
             return Unauthorized(ResponseMessage.Unautharized);
         }
 
+        [HttpGet("{id}/validatelogin")]
+        public IActionResult ValidateLogin(int id)
+        {
+            if (SystemUser.GetAuthenticated(HttpContext, UserRole.Any, out SystemUser usr) && usr.id == id)
+            {
+                return Ok(new ValidateLoginResponse() { IsLoggedIn = usr.IsLoggedIn()});
+            }
+            return Unauthorized(new ValidateLoginResponse() { IsLoggedIn = false });
+        }
+
         [HttpPost("{id}/rateentry")]
         public IActionResult PostRating(int id, [FromBody] EntryRating rating)
         {
