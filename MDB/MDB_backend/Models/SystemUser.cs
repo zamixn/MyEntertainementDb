@@ -67,7 +67,7 @@ namespace MDB_backend.Models
 
         public List<RatedGame> GetRatedGames()
         {
-            string sql = $"SELECT * FROM `game` LEFT JOIN `entryrating` ON `game`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` WHERE `fk_Userid`='{id}'";
+            string sql = $"SELECT * FROM `game` LEFT JOIN `entryrating` ON `game`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry`.`fk_user_creator` WHERE `fk_Userid`='{id}' ";
 
             DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
 
@@ -81,7 +81,7 @@ namespace MDB_backend.Models
 
         public List<RatedWatchable> GetRatedWatchables()
         {
-            string sql = $"SELECT * FROM `watchable` LEFT JOIN `entryrating` ON `watchable`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `entry`.`id`=`watchable`.`id` WHERE `entryrating`.`fk_Userid`='{id}'";
+            string sql = $"SELECT * FROM `watchable` LEFT JOIN `entryrating` ON `watchable`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `entry`.`id`=`watchable`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry`.`fk_user_creator` WHERE `entryrating`.`fk_Userid`='{id}'";
 
             DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
 

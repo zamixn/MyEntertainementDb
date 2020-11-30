@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MDB_backend.Models;
+using MDB_backend.Models.CodeOnly;
 using MDB_backend.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +16,16 @@ namespace MDB_backend.Controllers
     {
         // GET: Movies
         [HttpGet]
-        public IEnumerable<Watchable> Get()
+        public IEnumerable<WatchableWithCreator> Get()
         {
-            return Watchable.GetList();
+            return WatchableWithCreator.GetList();
         }
 
         // GET: Movies/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Watchable g = Watchable.Get(id);
+            WatchableWithCreator g = WatchableWithCreator.Get(id);
             if (g == null)
                 return NotFound(new ResponseMessage($"id: '{id}' not found"));
             return Ok(g);

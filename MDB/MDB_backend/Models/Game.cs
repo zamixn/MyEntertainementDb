@@ -1,5 +1,4 @@
-﻿using MDB_backend.Models.ExternalSources;
-using MDB_backend.Tools;
+﻿using MDB_backend.Tools;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
@@ -23,8 +22,8 @@ namespace MDB_backend.Models
         }
 
         [JsonConstructor]
-        public Game(int id, string title, string description, int creator, int timesPlayed, DateTime lastPlayed, DateTime releaseDate)
-            : base(id, title, description, creator)
+        public Game(int id, string title, string description, int creator, int timesPlayed, DateTime lastPlayed, DateTime releaseDate, string poster)
+            : base(id, title, description, creator, poster)
         {
             TimesPlayed = timesPlayed;
             LastPlayed = lastPlayed;
@@ -66,7 +65,8 @@ namespace MDB_backend.Models
                    description: Convert.ToString(row["Description"]),
                    timesPlayed: Convert.ToInt32(row["TimesPlayed"]),
                    lastPlayed: Convert.ToDateTime(row["LastPlayed"]),
-                   creator: Convert.ToInt32(row["fk_user_creator"])
+                   creator: Convert.ToInt32(row["fk_user_creator"]),
+                   poster: Convert.ToString(row["Poster"])
                    );
         }
 

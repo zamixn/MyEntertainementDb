@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MDB_backend.Models;
-using MDB_backend.Models.ExternalSources;
+using MDB_backend.Models.CodeOnly;
 using MDB_backend.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,16 +17,16 @@ namespace MDB_backend.Controllers
     public class GamesController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<Game> Get()
+        public IEnumerable<GameWithCreator> Get()
         {
-            return Game.GetList();
+            return GameWithCreator.GetList();
         }
 
         // GET: games/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Game g = Game.Get(id);
+            GameWithCreator g = GameWithCreator.Get(id);
             if (g == null)
                 return NotFound(new ResponseMessage("id not found"));
 

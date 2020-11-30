@@ -27,8 +27,8 @@ namespace MDB_backend.Models
         }
 
         [JsonConstructor]
-        public Watchable(int id, string title, string description, int creator, int timesSeen, DateTime lastSeen, WatchableType type, DateTime releaseDate)
-            : base(id, title, description, creator)
+        public Watchable(int id, string title, string description, int creator, int timesSeen, DateTime lastSeen, WatchableType type, DateTime releaseDate, string poster)
+            : base(id, title, description, creator, poster)
         {
             TimesSeen = timesSeen;
             LastSeen = lastSeen;
@@ -70,7 +70,8 @@ namespace MDB_backend.Models
                    lastSeen: Convert.ToDateTime(row["LastSeen"]),
                    type: (WatchableType)Convert.ToInt32(row["Type"]),
                    releaseDate: Convert.ToDateTime(row["ReleaseDate"]),
-                   creator: Convert.ToInt32(row["fk_user_creator"])
+                   creator: Convert.ToInt32(row["fk_user_creator"]),
+                   poster: Convert.ToString(row["Poster"])
                    );
         }
 

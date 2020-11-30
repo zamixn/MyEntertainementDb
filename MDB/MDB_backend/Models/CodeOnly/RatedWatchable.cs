@@ -8,14 +8,14 @@ namespace MDB_backend.Models.CodeOnly
 {
     public class RatedWatchable
     {
-        public Watchable watchable;
+        public WatchableWithCreator watchable;
         public EntryRating rating;
 
         public static RatedWatchable Parse(DataRow row)
         {
             return new RatedWatchable()
             {
-                watchable = Watchable.Parse(row),
+                watchable = WatchableWithCreator.Parse(row),
                 rating = EntryRating.ParseEntryRating(row)
             };
         }

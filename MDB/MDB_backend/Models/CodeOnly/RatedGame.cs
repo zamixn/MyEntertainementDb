@@ -8,13 +8,13 @@ namespace MDB_backend.Models.CodeOnly
 {
     public class RatedGame
     {
-        public Game game;
+        public GameWithCreator game;
         public EntryRating rating;
 
         public static RatedGame Parse(DataRow row)
         {
             return new RatedGame() { 
-                game = Game.Parse(row), 
+                game = GameWithCreator.Parse(row), 
                 rating = EntryRating.ParseEntryRating(row) };
         }
     }
