@@ -13,8 +13,6 @@ namespace MDB_backend.Models
 {
     public class Game : Entry
     {
-        public int TimesPlayed { get; private set; }
-        public DateTime LastPlayed { get; private set; }
         public DateTime ReleaseDate { get; private set; }
 
         public Game() : base()
@@ -22,11 +20,9 @@ namespace MDB_backend.Models
         }
 
         [JsonConstructor]
-        public Game(int id, string title, string description, int creator, int timesPlayed, DateTime lastPlayed, DateTime releaseDate, string poster)
+        public Game(int id, string title, string description, int creator, DateTime releaseDate, string poster)
             : base(id, title, description, creator, poster)
         {
-            TimesPlayed = timesPlayed;
-            LastPlayed = lastPlayed;
             ReleaseDate = releaseDate;
         }
 
@@ -63,8 +59,6 @@ namespace MDB_backend.Models
                    title: Convert.ToString(row["Title"]),
                    releaseDate: Convert.ToDateTime(row["ReleaseDate"]),
                    description: Convert.ToString(row["Description"]),
-                   timesPlayed: Convert.ToInt32(row["TimesPlayed"]),
-                   lastPlayed: Convert.ToDateTime(row["LastPlayed"]),
                    creator: Convert.ToInt32(row["fk_user_creator"]),
                    poster: Convert.ToString(row["Poster"])
                    );
@@ -75,7 +69,7 @@ namespace MDB_backend.Models
             int id = Entry.GetAutoIncrament(); 
             g.CreateEntry(id);
 
-            string sql = $"INSERT INTO `game`(`id`, `TimesPlayed`, `LastPlayed`, `ReleaseDate`) VALUES ('{id}','{g.TimesPlayed}','{g.LastPlayed}','{g.ReleaseDate}')";
+            string sql = $"INSERT INTO `game`(`id`, `ReleaseDate`) VALUES ('{id}','{g.ReleaseDate}')";
             DatabaseHelper.ExecuteNonQuery(sql);
 
             g.ChangeId(id);
@@ -90,7 +84,7 @@ namespace MDB_backend.Models
 
             g.UpdateEntry(id);
 
-            string sql = $"UPDATE `game` SET `TimesPlayed`='{g.TimesPlayed}',`LastPlayed`='{g.LastPlayed}',`ReleaseDate`='{g.ReleaseDate}' WHERE `game`.`id`='{id}'";
+            string sql = $"UPDATE `game` SET `ReleaseDate`='{g.ReleaseDate}' WHERE `game`.`id`='{id}'";
             DatabaseHelper.ExecuteNonQuery(sql);
 
             return true;

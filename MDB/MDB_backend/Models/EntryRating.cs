@@ -15,13 +15,17 @@ namespace MDB_backend.Models
         public int id { get; private set; }
         public int entry_id { get; private set; }
         public int user_id { get; private set; }
+        public int TimesConsumed { get; private set; }
+        public DateTime LastConsumed { get; private set; }
 
-        public EntryRating(double rating, int id, int entry_id, int user_id)
+        public EntryRating(double rating, int id, int entry_id, int user_id, int timesConsumed, DateTime lastConsumed)
         {
             Rating = rating;
             this.id = id;
             this.entry_id = entry_id;
             this.user_id = user_id;
+            TimesConsumed = timesConsumed;
+            LastConsumed = lastConsumed;
         }
 
         public List<EntryRating> GetUserRated(SystemUser user)
@@ -42,7 +46,9 @@ namespace MDB_backend.Models
             return new EntryRating(rating: Convert.ToDouble(row["Rating"]),
                                    id: Convert.ToInt32(row["id_EntryRating"]),
                                    entry_id: Convert.ToInt32(row["fk_Entryid"]),
-                                   user_id: Convert.ToInt32(row["fk_Userid"]));
+                                   user_id: Convert.ToInt32(row["fk_Userid"]),
+                                   timesConsumed: Convert.ToInt32(row["TimesConsumed"]),
+                                   lastConsumed: Convert.ToDateTime(row["LastConsumed"]));
         }
 
 
@@ -73,7 +79,7 @@ namespace MDB_backend.Models
                 });
             EntryRating r = ParseEntryRating(row);
 
-            string sql = $"UPDATE `entryrating` SET `Rating`='{entryRating.Rating}' WHERE `entryrating`.`id_EntryRating`='{r.id}'";
+            string sql = $"UPDATE `entryrating` SET `Rating`='{entryRating.Rating}',`TimesConsumed`='{entryRating.TimesConsumed}',`LastConsumed`='{entryRating.LastConsumed}' WHERE `entryrating`.`id_EntryRating`='{r.id}'";
             DatabaseHelper.ExecuteNonQuery(sql);
             entryRating.id = r.id;
             return true;

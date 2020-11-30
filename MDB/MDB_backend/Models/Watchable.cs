@@ -17,8 +17,6 @@ namespace MDB_backend.Models
             Anime = 3
         }
 
-        public int TimesSeen { get; private set; }
-        public DateTime LastSeen { get; private set; }
         public WatchableType Type { get; private set; }
         public DateTime ReleaseDate { get; private set; }
 
@@ -27,11 +25,9 @@ namespace MDB_backend.Models
         }
 
         [JsonConstructor]
-        public Watchable(int id, string title, string description, int creator, int timesSeen, DateTime lastSeen, WatchableType type, DateTime releaseDate, string poster)
+        public Watchable(int id, string title, string description, int creator, WatchableType type, DateTime releaseDate, string poster)
             : base(id, title, description, creator, poster)
         {
-            TimesSeen = timesSeen;
-            LastSeen = lastSeen;
             Type = type;
             ReleaseDate = releaseDate;
         }
@@ -66,8 +62,6 @@ namespace MDB_backend.Models
                    id: Convert.ToInt32(row["id"]),
                    title: Convert.ToString(row["Title"]),
                    description: Convert.ToString(row["Description"]),
-                   timesSeen: Convert.ToInt32(row["TimesSeen"]),
-                   lastSeen: Convert.ToDateTime(row["LastSeen"]),
                    type: (WatchableType)Convert.ToInt32(row["Type"]),
                    releaseDate: Convert.ToDateTime(row["ReleaseDate"]),
                    creator: Convert.ToInt32(row["fk_user_creator"]),
@@ -80,7 +74,7 @@ namespace MDB_backend.Models
             int id = Entry.GetAutoIncrament();
             w.CreateEntry(id);
 
-            string sql = $"INSERT INTO `watchable`(`TimesSeen`, `LastSeen`, `Type`, `ReleaseDate`, `id`) VALUES ('{w.TimesSeen}','{w.LastSeen}', '{(int)w.Type}', '{w.ReleaseDate}','{id}')";
+            string sql = $"INSERT INTO `watchable`(`Type`, `ReleaseDate`, `id`) VALUES ('{(int)w.Type}', '{w.ReleaseDate}','{id}')";
             DatabaseHelper.ExecuteNonQuery(sql);
 
             w.ChangeId(id);
@@ -95,7 +89,7 @@ namespace MDB_backend.Models
 
             w.UpdateEntry(id);
 
-            string sql = $"UPDATE `watchable` SET `TimesSeen`='{w.TimesSeen}',`LastSeen`='{w.LastSeen}',`Type`='{(int)w.Type}',`ReleaseDate`='{w.ReleaseDate}' WHERE `watchable`.`id`='{id}'";
+            string sql = $"UPDATE `watchable` SET `Type`='{(int)w.Type}',`ReleaseDate`='{w.ReleaseDate}' WHERE `watchable`.`id`='{id}'";
             DatabaseHelper.ExecuteNonQuery(sql);
 
             return true;
