@@ -24,7 +24,7 @@ namespace MDB_backend.Models.CodeOnly
 
         public static List<GameWithCreator> GetList()
         {
-            string sql = $"SELECT * FROM `game` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry`.`fk_user_creator`";
+            string sql = $"SELECT * FROM `game` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` LEFT JOIN `entry_creator` ON `entry_creator`.`fk_Entryid`=`entry`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry_creator`.`fk_Creatorid`";
             DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
 
             List<GameWithCreator> list = new List<GameWithCreator>();
@@ -37,7 +37,7 @@ namespace MDB_backend.Models.CodeOnly
 
         public static GameWithCreator Get(int id)
         {
-            string sql = $"SELECT * FROM `game` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry`.`fk_user_creator` WHERE `game`.`id`='{id}'";
+            string sql = $"SELECT * FROM `game` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` LEFT JOIN `entry_creator` ON `entry_creator`.`fk_Entryid`=`entry`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry_creator`.`fk_Creatorid` WHERE `game`.`id`='{id}'";
             DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
 
             if (dt.Rows.Count <= 0)

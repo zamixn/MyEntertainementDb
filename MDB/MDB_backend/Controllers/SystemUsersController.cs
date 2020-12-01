@@ -109,6 +109,19 @@ namespace MDB_backend.Controllers
             return Unauthorized(ResponseMessage.Unautharized);
         }
 
+        [HttpGet("{id}/games/{game_id}")]
+        public IActionResult GetGames(int id, int game_id)
+        {
+            if (SystemUser.GetAuthenticated(HttpContext, UserRole.Any, out SystemUser usr) && usr.id == id)
+            {
+                var res = usr.GetRatedGame(game_id);
+                if (res != null)
+                    return Ok(res);
+                else
+                    NotFound(new ResponseMessage("specified id does not exist"));
+            }
+            return Unauthorized(ResponseMessage.Unautharized);
+        }
 
         [HttpGet("{id}/games")]
         public IActionResult GetGames(int id)
@@ -116,6 +129,20 @@ namespace MDB_backend.Controllers
             if (SystemUser.GetAuthenticated(HttpContext, UserRole.Any, out SystemUser usr) && usr.id == id)
             {
                 return Ok(usr.GetRatedGames());
+            }
+            return Unauthorized(ResponseMessage.Unautharized);
+        }
+
+        [HttpGet("{id}/watchables/{watchable_id}")]
+        public IActionResult GetWatchables(int id, int watchable_id)
+        {
+            if (SystemUser.GetAuthenticated(HttpContext, UserRole.Any, out SystemUser usr) && usr.id == id)
+            {
+                var res = usr.GetRatedWatchable(watchable_id);
+                if (res != null)
+                    return Ok(res);
+                else
+                    NotFound(new ResponseMessage("specified id does not exist"));
             }
             return Unauthorized(ResponseMessage.Unautharized);
         }

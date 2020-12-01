@@ -11,9 +11,10 @@ namespace MDB_backend.Models
     {
         public enum CreatorType
         {
-            Developer,
-            Publisher,
-            Director            
+            Null = 99,
+            Developer = 1,
+            Publisher = 2,
+            Director = 3            
         }
 
         public string Name { get; private set; }
@@ -30,7 +31,9 @@ namespace MDB_backend.Models
         }
 
         public static Creator Parse(DataRow row)
-        { 
+        {
+            if (row["creator_id"] == DBNull.Value)
+                return new Creator("-", "-", CreatorType.Null, -1);
             return new Creator(
                     id: Convert.ToInt32(row["creator_id"]),
                     info: Convert.ToString(row["Info"]),

@@ -65,6 +65,14 @@ namespace MDB_backend.Models
             return null;
         }
 
+        public RatedGame GetRatedGame(int game_id)
+        {
+            string sql = $"SELECT * FROM `game` LEFT JOIN `entryrating` ON `game`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry`.`fk_user_creator` WHERE `fk_Userid`='{id}' AND `entry`.`id`='{game_id}'";
+
+            DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
+            return dt.Rows.Count > 0 ? RatedGame.Parse(dt.Rows[0]) : null;
+        }
+
         public List<RatedGame> GetRatedGames()
         {
             string sql = $"SELECT * FROM `game` LEFT JOIN `entryrating` ON `game`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `game`.`id`=`entry`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry`.`fk_user_creator` WHERE `fk_Userid`='{id}' ";
@@ -79,6 +87,14 @@ namespace MDB_backend.Models
             return list;
         }
 
+
+        public RatedWatchable GetRatedWatchable(int watchable_id)
+        {
+            string sql = $"SELECT * FROM `watchable` LEFT JOIN `entryrating` ON `watchable`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `entry`.`id`=`watchable`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry`.`fk_user_creator` WHERE `entryrating`.`fk_Userid`='{id}' AND `entry`.`id`='{watchable_id}'";
+
+            DataTable dt = DatabaseHelper.FillDataTableWithQueryResults(sql);
+            return dt.Rows.Count > 0 ? RatedWatchable.Parse(dt.Rows[0]) : null;
+        }
         public List<RatedWatchable> GetRatedWatchables()
         {
             string sql = $"SELECT * FROM `watchable` LEFT JOIN `entryrating` ON `watchable`.`id`=`entryrating`.`fk_Entryid` LEFT JOIN `entry` ON `entry`.`id`=`watchable`.`id` LEFT JOIN `creator` ON `creator`.`creator_id`=`entry`.`fk_user_creator` WHERE `entryrating`.`fk_Userid`='{id}'";
