@@ -1,4 +1,5 @@
 ﻿using MDB_backend.Tools;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,6 +32,7 @@ namespace MDB_backend.Models.CodeOnly
             {
                 list.Add(Parse(row));
             }
+            list = list.DistinctBy(e => e.watchable.Id).ToList();
             return list;
         }
 

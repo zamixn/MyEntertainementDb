@@ -1,4 +1,5 @@
 ﻿using MDB_backend.Tools;
+using MoreLinq.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -32,6 +33,7 @@ namespace MDB_backend.Models.CodeOnly
             {
                 list.Add(Parse(row));
             }
+            list = list.DistinctBy(e => e.game.Id).ToList();
             return list;
         }
 

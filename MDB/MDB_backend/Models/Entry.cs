@@ -44,7 +44,7 @@ namespace MDB_backend.Models
 
         protected bool CreateEntry(int id)
         {
-            string sql = $"INSERT INTO `entry`(`Title`, `Description`, `fk_Userid`, `id`, `Poster`) VALUES ('{Title}','{Description}', '{Creator}','{id}', '{Poster}')";
+            string sql = $"INSERT INTO `entry`(`Title`, `Description`, `fk_user_creator`, `id`, `Poster`) VALUES ('{Title}','{Description}', '{Creator}','{id}', '{Poster}')";
             DatabaseHelper.ExecuteNonQuery(sql);
 
             return true;
