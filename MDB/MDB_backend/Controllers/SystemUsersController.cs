@@ -109,6 +109,20 @@ namespace MDB_backend.Controllers
             return Unauthorized(ResponseMessage.Unautharized);
         }
 
+        [HttpGet("{id}/hasrated/{entry_id}")]
+        public IActionResult IsEntryRated(int id, int entry_id)
+        {
+            if (SystemUser.GetAuthenticated(HttpContext, UserRole.Any, out SystemUser usr) && usr.id == id)
+            {
+                var res = EntryRating.Exists(new EntryRating(0, 0, entry_id, id, 0, DateTime.Now));
+                if (res)
+                    return Ok(new ResponseMessage("entry is rated"));
+                else
+                    return NotFound(new ResponseMessage("specified entry is not rated"));
+            }
+            return Unauthorized(ResponseMessage.Unautharized);
+        }
+
         [HttpGet("{id}/games/{game_id}")]
         public IActionResult GetGames(int id, int game_id)
         {
@@ -118,7 +132,7 @@ namespace MDB_backend.Controllers
                 if (res != null)
                     return Ok(res);
                 else
-                    NotFound(new ResponseMessage("specified id does not exist"));
+                    return NotFound(new ResponseMessage("specified id does not exist"));
             }
             return Unauthorized(ResponseMessage.Unautharized);
         }
