@@ -53,7 +53,7 @@ namespace MDB_backend.Controllers
             if (response == null)
                 return BadRequest(ResponseMessage.InvalidUserData);
 
-            return Ok(response);
+            return Created("uri", response);
         }
 
         [HttpPost("login")]
